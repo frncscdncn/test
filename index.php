@@ -1,5 +1,26 @@
 <?php
 
+// $flights = [
+//     [
+//         'from'    => 'VKO',
+//         'to'      => 'DME',
+//         'depart'  => '01.01.2020 12:44',
+//         'arrival' => '01.01.2020 13:44',
+//     ],
+//     [
+//         'from'    => 'DME',
+//         'to'      => 'JFK',
+//         'depart'  => '02.01.2020 23:00',
+//         'arrival' => '03.01.2020 11:44',
+//     ],
+//     [
+//         'from'    => 'DME',
+//         'to'      => 'HKT',
+//         'depart'  => '01.01.2020 13:40',
+//         'arrival' => '01.01.2020 22:22',
+//     ],
+// ];
+
 $flights = [
     [
         'from'    => 'VKO',
@@ -16,9 +37,21 @@ $flights = [
     [
         'from'    => 'DME',
         'to'      => 'HKT',
-        'depart'  => '01.01.2020 13:40',
-        'arrival' => '01.01.2020 22:22',
+        'depart'  => '04.01.2020 13:40',
+        'arrival' => '04.01.2020 22:22',
     ],
+    [
+        'from'    => 'HKT',
+        'to'      => 'KZ',
+        'depart'  => '05.01.2020 13:40',
+        'arrival' => '05.01.2020 22:22',
+    ],
+    // [
+    //     'from'    => 'HKT',
+    //     'to'      => 'KZ',
+    //     'depart'  => '10.01.2020 13:40',
+    //     'arrival' => '10.01.2020 22:22',
+    // ],
 ];
 
 
@@ -36,6 +69,7 @@ function findAndOutputTheLongestRouteByTime(array $flights) {
         if ($i === $j) continue;
   
         $nextFlight = $flights[$j];
+        $firstFlight = $route[0];
         $lastFlight = end($route);
   
         if (
@@ -47,6 +81,13 @@ function findAndOutputTheLongestRouteByTime(array $flights) {
           $routeTime = getRouteTime($route);
           $j = -1;
         }
+
+
+        if  ($nextFlight['to'] === $firstFlight['from'] && strtotime($nextFlight['arrival']) < strtotime($firstFlight['depart'])) {
+            array_unshift($route, $nextFlight);
+            $routeTime = getRouteTime($route);
+            $j = -1;
+        }
       }
   
       if ($routeTime > $longestRouteTime) {
@@ -56,7 +97,7 @@ function findAndOutputTheLongestRouteByTime(array $flights) {
     }
 
     // получаем кол-во часов в пути в самом продожительном маршруте, с учетом проведенного времени в транзитном аэропорту 
-    $hours = floor(getRouteTime($longestRoute) / 60 / 60);
+    // $hours = floor(getRouteTime($longestRoute) / 60 / 60);
 
     // отображаем информацию по самому продолжительному маршруту
     foreach ($longestRoute as $key => $route) {
@@ -81,3 +122,7 @@ function findAndOutputTheLongestRouteByTime(array $flights) {
 
   // вызываем функцию по поиску самого продолжительного маршрута
   findAndOutputTheLongestRouteByTime($flights);
+
+// $arr = [[1], [1, 2, 3]];
+// $arr[0][] = 2;
+// print_r($arr);
