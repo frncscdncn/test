@@ -32,7 +32,7 @@ class Route
     
     private function setAllPermutationOptionsFlights (array $flights = []): void
     {
-        (count($flights)) ? $this->allPermutationOptionsFlights[] = $flights : $this->allPermutationOptionsFlights = $flights;
+        count($flights) ? $this->allPermutationOptionsFlights[] = $flights : $this->allPermutationOptionsFlights = $flights;
     }
     
     public function getAllPermutationOptionsFlights (): array
@@ -89,14 +89,10 @@ class Route
                     $firstFlight = $route[0];
                     $lastFlight = end($route);
             
-                    if (
-                    $nextFlight['from'] === $lastFlight['to'] &&
-                    strtotime($nextFlight['depart']) >
-                        strtotime($lastFlight['arrival'])
-                    ) {
-                    $route[] = $nextFlight;
-                    $routeTime = $this->getRouteTime($route);
-                    $j = -1;
+                    if ($nextFlight['from'] === $lastFlight['to'] && strtotime($nextFlight['depart']) > strtotime($lastFlight['arrival'])) {
+                        $route[] = $nextFlight;
+                        $routeTime = $this->getRouteTime($route);
+                        $j = -1;
                     }
             
             
@@ -109,8 +105,8 @@ class Route
             }
       
             if ($routeTime > $longestRouteTime) {
-            $longestRoute = $route;
-            $longestRouteTime = $routeTime;
+                $longestRoute = $route;
+                $longestRouteTime = $routeTime;
             }
 
             $allRouts[] = $route;
